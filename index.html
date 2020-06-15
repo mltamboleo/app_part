@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part</title>
+    <!-- VUE engine  -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+    <!-- Styles app -->
+    <link href="part/app.css" rel="stylesheet">
+     <!-- Font -->
+     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    
+    <!-- Main -->
+    <div id="app">
+        <h1 class="part__name">Part {{ part.name }}</h1>
+        <div class="part__container">
+            <!-- Component (loop) -->
+            <div class="feature" v-for="feature in part.features" :class="gridSpan(feature)">
+                <!-- Name -->
+                <feature-name :name="feature.name" :quality-label="getQualityLabel(feature)"></feature-name>
+                <!-- Campos -->
+                <div class="feature__header-wrapper">
+                    <control-header></control-header>
+                    <control-header v-if="hasTwoColumns(feature)"></control-header>
+                </div>
+                <!-- Controls -->
+                <div class="feature__controls-container">
+                    <div v-for="group in feature.controlGroups">
+                        <control v-for="control in group" :name="control.name" :dev="control.dev"
+                            :dev-out="control.devOut" :quality-label="getQualityLabel(control)"></control>
+                    </div>
+                </div>
+                <!-- Menu -->
+                <div class="feature__menu"><img src="part/icons/more.svg" width="15" height="15" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VUE app -->
+    <script src="part/app.js"></script>
+</body>
+</html>
