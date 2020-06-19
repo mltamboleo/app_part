@@ -2,18 +2,39 @@
 // Componentes
 // -----------------------
 
-// CONTROL HEADER
-Vue.component('control-header', {
-    template: '<div class="feature__header"><span class="feature__header-value">Control</span><span class="feature__header-value text-center">Dev</span><span class="feature__header-value text-center">Dev Out Tol</span><span></span></div>'
-});
-
 // FEATURE NAME
 Vue.component('feature-name', {
+    template: `
+    <h2 :class="getClass">
+        <img src="part/icons/circle.svg" width="15" height="15" />
+        {{ name }}
+        <img :src="getIcon" width="15" height="15" />
+    </h2>
+    `,
     props: {
         name: String,
         qualityLabel: String
     },
-    template: '<h2 :class="\'feature__name feature__name--quality-\' + qualityLabel"><img src="part/icons/circle.svg" width="15" height="15" />{{ name }}<img :src="\'part/icons/\' + qualityLabel + \'.svg\'" width="15" height="15" /></h2>',
+    computed: {
+        getClass(){
+            return `feature__name feature__name--quality-${this.qualityLabel}`;
+        },
+        getIcon(){
+            return `part/icons/${this.qualityLabel}.svg`;
+        }
+    }
+});
+
+// CONTROL HEADER
+Vue.component('control-header', {
+    template: `
+    <div class="feature__header">
+        <span class="feature__header-value">Control</span>
+        <span class="feature__header-value text-center">Dev</span>
+        <span class="feature__header-value text-center">Dev Out Tol</span>
+        <span></span>
+    </div>
+    `
 });
 
 // CONTROL
@@ -24,7 +45,21 @@ Vue.component('control', {
         devOut: Number,
         qualityLabel: String
     },
-    template: '<div class="feature__control"><span class="feature__control-value">{{ name }}</span><span class="feature__control-value text-center">{{ dev }}</span><span class="feature__control-value text-center">{{ devOut }}</span><span class="feature__control-quality"><img :src="\'part/icons/\' + qualityLabel + \'_color.svg\'" width="15" height="15" /></span></div>'
+    template: `
+    <div class="feature__control">
+        <span class="feature__control-value">{{ name }}</span>
+        <span class="feature__control-value text-center">{{ dev }}</span>
+        <span class="feature__control-value text-center">{{ devOut }}</span>
+        <span class="feature__control-quality">
+            <img :src="getIcon" width="15" height="15" />
+        </span>
+    </div>
+    `,
+    computed: {
+        getIcon(){
+            return `part/icons/${this.qualityLabel}_color.svg`;
+        }
+    }
 });
 
 // -----------------------
