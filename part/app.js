@@ -500,23 +500,9 @@ var app = new Vue({
             let c_length = feature.controls.length;
             return c_length > 12;
         },
-        getQualityLabel(quality) {
-            let qualityLabel = "";
-            switch (quality) {
-                case 0: {
-                    qualityLabel = "bad";
-                    break;
-                }
-                case 1: {
-                    qualityLabel = "average";
-                    break;
-                }
-                case 2: {
-                    qualityLabel = "good";
-                    break;
-                }
-            }
-            return qualityLabel
+        getQualityLabel(index) {
+            let qualityLabel = ["bad", "average", "good"];
+            return qualityLabel[index];
         }
     },
 });
