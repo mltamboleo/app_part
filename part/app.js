@@ -86,7 +86,7 @@ Vue.component('control', {
 // -----------------------
 // App
 // -----------------------
-var app = new Vue({
+const app = new Vue({
     el: '#app',
     mounted() {
         this.fetchData(); // Agrupamos controls de 4 en 4
