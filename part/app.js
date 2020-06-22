@@ -2,25 +2,41 @@
 // Componentes
 // -----------------------
 
+// PART NAME
+Vue.component('part-name', {
+    props: {
+        name: String
+    },
+    template: `<h1 class="part__name">Part {{ name }}</h1>`,
+})
+
 // FEATURE NAME
 Vue.component('feature-name', {
     template: `
-    <h2 :class="getClass">
-        <img src="part/icons/circle.svg" width="15" height="15" />
+    <h2 :class="featureClass">
+        <img src="part/icons/circle.svg" :width="iconSize" :height="iconSize" />
         {{ name }}
-        <img :src="getIcon" width="15" height="15" />
+        <img :src="featureIcon" :width="iconSize" :height="iconSize" />
     </h2>
     `,
     props: {
         name: String,
-        qualityLabel: String
+        quality: Number
+    },
+    data() {
+        return {
+            iconSize: 15 // 15 x 15, iconos cuadrados
+        }
     },
     computed: {
-        getClass(){
-            return `feature__name feature__name--quality-${this.qualityLabel}`;
+        featureClass() {
+            return `feature__name feature__name--quality-${this.qualityLabel}`            
         },
-        getIcon(){
-            return `part/icons/${this.qualityLabel}.svg`;
+        featureIcon() {
+            return `part/icons/${this.qualityLabel}.svg`
+        },
+        qualityLabel(){
+            return this.$parent.getQualityLabel(this.quality);
         }
     }
 });
@@ -40,24 +56,29 @@ Vue.component('control-header', {
 // CONTROL
 Vue.component('control', {
     props: {
-        name: String,
-        dev: Number,
-        devOut: Number,
-        qualityLabel: String
+        obj: Object
+    },
+    data() {
+        return {
+            iconSize: 15 // 15 x 15, iconos cuadrados
+        }
     },
     template: `
     <div class="feature__control">
-        <span class="feature__control-value">{{ name }}</span>
-        <span class="feature__control-value text-center">{{ dev }}</span>
-        <span class="feature__control-value text-center">{{ devOut }}</span>
+        <span class="feature__control-value">{{ this.obj.name }}</span>
+        <span class="feature__control-value text-center">{{ this.obj.dev }}</span>
+        <span class="feature__control-value text-center">{{ this.obj.devOut }}</span>
         <span class="feature__control-quality">
-            <img :src="getIcon" width="15" height="15" />
+            <img :src="controlIcon" :width="iconSize" :height="iconSize" />
         </span>
     </div>
     `,
     computed: {
-        getIcon(){
+        controlIcon(){
             return `part/icons/${this.qualityLabel}_color.svg`;
+        },
+        qualityLabel(){
+            return this.$parent.getQualityLabel(this.obj.quality);
         }
     }
 });
@@ -463,7 +484,9 @@ var app = new Vue({
                     temparray = controls.slice(i, i + chunk);
                     groups.push(temparray);
                 }
-                features[n].controlGroups = groups; // Creamos nodo de datos en el JSON con controles agrupados de 4 en 4 para cada feature
+                // Creamos nodo de datos en el JSON con controles agrupados de 4 en 4 para cada feature
+                // Utilizado método "set" para evitar el uso de "forceUpdate" en el script principal
+                this.$set(features[n], 'controlGroups', groups)
             }
             let _this = this;
             setTimeout(function () { _this.randomData() }, 10000);
@@ -477,10 +500,9 @@ var app = new Vue({
             let c_length = feature.controls.length;
             return c_length > 12;
         },
-        getQualityLabel(obj) {
-            let q = obj.quality; // 0, 1 o 2
+        getQualityLabel(quality) {
             let qualityLabel = "";
-            switch (q) {
+            switch (quality) {
                 case 0: {
                     qualityLabel = "bad";
                     break;
@@ -498,4 +520,3 @@ var app = new Vue({
         }
     },
 });
-app.$forceUpdate();

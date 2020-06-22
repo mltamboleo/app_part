@@ -17,13 +17,14 @@
     
     <!-- Main -->
     <div id="app">
-        <h1 class="part__name">Part {{ part.name }}</h1>
+         <!-- Part name -->
+        <part-name :name="part.name"></part-name>
         <div class="part__container">
-            <!-- Component (loop) -->
-            <div class="feature" v-for="feature in part.features" :class="gridSpan(feature)">
+            <!-- Features loop -->
+            <div v-for="feature in part.features" class="feature" :class="gridSpan(feature)">
                 <!-- Name -->
-                <feature-name :name="feature.name" :quality-label="getQualityLabel(feature)"></feature-name>
-                <!-- Campos -->
+                <feature-name :name="feature.name" :quality="feature.quality"></feature-name>
+                <!-- Header -->
                 <div class="feature__header-wrapper">
                     <control-header></control-header>
                     <control-header v-if="hasTwoColumns(feature)"></control-header>
@@ -31,8 +32,7 @@
                 <!-- Controls -->
                 <div class="feature__controls-container">
                     <div v-for="group in feature.controlGroups">
-                        <control v-for="control in group" :name="control.name" :dev="control.dev"
-                            :dev-out="control.devOut" :quality-label="getQualityLabel(control)"></control>
+                        <control v-for="control in group" :obj="control" :key="control.id"></control>
                     </div>
                 </div>
                 <!-- Menu -->
@@ -43,5 +43,6 @@
 
     <!-- VUE app -->
     <script src="part/app.js"></script>
+
 </body>
 </html>
