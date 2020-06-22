@@ -479,7 +479,7 @@ var app = new Vue({
                 let controls = features[n].controls;
                 let groups = [];
 
-                var i, j, temparray, chunk = 4;
+                let i, j, temparray, chunk = 4;
                 for (i = 0, j = controls.length; i < j; i += chunk) {
                     temparray = controls.slice(i, i + chunk);
                     groups.push(temparray);
