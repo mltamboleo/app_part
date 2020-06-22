@@ -51,6 +51,7 @@
         max-height: 35px;
         margin-bottom: 5px;
         position: relative;
+        transition: background-color 1s;
     }
 
     #app .feature__name img {
